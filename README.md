@@ -1,2 +1,2 @@
 # rebolt
-A refined common interface for bolt and redis
+A refined common interface for bolt and redis.
