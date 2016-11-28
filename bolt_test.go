@@ -16,7 +16,7 @@ func TestUpdate(t *testing.T) {
 			PoolSize: 2,
 		},
 	})
-	mydb, err := GetDB("redis", 0)
+	mydb, err := GetDB("bolt", 0)
 	if err != nil {
 		t.FailNow()
 	}
