@@ -71,4 +71,4 @@ A refined common interface for [bolt](https://github.com/boltdb/bolt) and [redis
 
 3. More usage example, please refer
 
- [`bolt_test.go`](https://github.com/jibuji/rebolt/blob/master/bolt.go)
+ [`bolt_test.go`](https://github.com/jibuji/rebolt/blob/master/bolt_test.go)
