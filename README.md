@@ -72,20 +72,20 @@ A refined common interface for [bolt](https://github.com/boltdb/bolt) and [redis
 
   2. read and write from/to db
 
-  ```go
-  mydb, err := GetDB("redis", 0)
-	if err != nil {
-		panic(err)
+```go
+mydb, err := GetDB("redis", 0)
+if err != nil {
+	panic(err)
+}
+mydb.Update(func(tx rebolt.ITX) error {
+	key, value := []byte("hello"), []byte("world")
+	tx.Set(key, value)
+	if bytes.Compare(value, tx.Get(key)) != 0 {
+		return errors.New("gotten wrong value!");
 	}
-	mydb.Update(func(tx rebolt.ITX) error {
-		key, value := []byte("hello"), []byte("world")
-		tx.Set(key, value)
-		if bytes.Compare(value, tx.Get(key)) != 0 {
-			return errors.New("gotten wrong value!");
-		}
-    return nil
-  })
-  ```
+  return nil
+})
+```
 
 3. More usage example, please refer
 
