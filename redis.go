@@ -125,7 +125,7 @@ func (tx redisTx) HMGet(kfields ...interface{}) [][]byte {
 }
 
 func (tx redisTx) HGetAll(key interface{}) [][]byte {
-	resp := tx.conn.Cmd("HMGETALL", key)
+	resp := tx.conn.Cmd("HGETALL", key)
 	ba, _ := resp.ListBytes()
 	return ba
 }

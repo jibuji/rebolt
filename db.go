@@ -1,3 +1,14 @@
+// Copyright 2016 jibuji. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package rebolt encapsulate bolt and redis operation into a tiny, common,
+// and easy to use operations, so you can change your db between bolt and redis
+// without pains.
+//
+// Remmeber the key and value types in both bolt and redis:
+// `string, bool`, any integer types, any float types, and arrays of this types.
+// The underhood representation is `[]byte`, it's your responsibility to interpret it.
 package rebolt
 
 import (
@@ -10,16 +21,30 @@ import (
 
 //IDB database interface
 type IDB interface {
-	Update(func(tx ITX) error)
-	View(func(tx ITX) error)
+	// Update with write or read operation to the db, you should
+	// put your db-ops into the callback function implementations.
+	// If you just want some read operation on the db, please using
+	// View function, this will give you more concurrency-efficient.
+	Update(callback func(tx ITX) error)
+
+	//View with only read operation, you should
+	// put your db-ops into the callback function implementations.
+	// Write to db here is not allowed.
+	View(callback func(tx ITX) error)
 }
 
-//ITX transaction interface
+//ITX transaction interface, you can grab ITX interface handle in `Update` or
+// `View` functions.
 type ITX interface {
-	Set(interface{}, interface{})
-	Get(interface{}) []byte
-	Del(interface{})
+	//Set stores the key-value pair in db.
+	Set(key interface{}, value interface{})
+	//Get retrieves the value by the given key.
+	Get(key interface{}) []byte
+	//Del rm the key-value pair by the given key
+	Del(key interface{})
+	//Keys get all keys that match the given `glob` pattern
 	Keys(pattern interface{}) [][]byte
+	//SIsMember return if the field is in the set indicated by the given key
 	SIsMember(key, field interface{}) bool
 	SMembers(key interface{}) [][]byte
 	SAdd(key, member interface{})

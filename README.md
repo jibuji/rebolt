@@ -15,6 +15,26 @@ A refined common interface for [bolt](https://github.com/boltdb/bolt) and [redis
 
 ## Limitation:
 
+  * Bolt and redis both have their own limitations:
+
+    * For Bolt:
+
+      * `Update` and `View` functions are using transactions, they pretty safe in concurrency. `watch, multi, exec` operations are empty when using bolt.
+
+      * But, bolt allows only one `update` transaction at a time, while allows as many `view` transactions as you want at a time. So, you should always using `View` function when you didn't `update` anything.
+
+    * For redis:
+
+      * redis doesn't differentiate `Update` and `View`, in the underhood, they are same, and very fast.
+
+      * And you should pay an attention that `Update` and `View` are not transactional on redis. You should rely on Redis Ops `watch, multi, exec`.
+
+  * When using this rebolt library, your code will be restricted by the limitations of both of bolt and redis, but on the trade, your code will be portable on both of bolt and redis. In fact, the limitatons are not much, just remember two things:
+
+    * using `Update` function if you want to write or update things into the db. otherwise, using `View` definitely.
+
+    * using `watch, multi, exec` to ensure your transaction, and they pretty straight forward.
+
   * This is a tiny set of interfaces that bridge the gap between redis and bolt. But it is still not complete, some data structures, such as lists, bitmaps, sorted sets are currently not supported.
 
   * Welcome your suggestions and contributions.
@@ -72,3 +92,5 @@ A refined common interface for [bolt](https://github.com/boltdb/bolt) and [redis
 3. More usage example, please refer
 
  [`bolt_test.go`](https://github.com/jibuji/rebolt/blob/master/bolt_test.go)
+ [`redis_test.go`](https://github.com/jibuji/rebolt/blob/master/redis_test.go)
+ [`comfunc_for_test.go`](https://github.com/jibuji/rebolt/blob/master/comfunc_for_test.go)
