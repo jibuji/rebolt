@@ -73,7 +73,6 @@ A refined common interface for [bolt](https://github.com/boltdb/bolt) and [redis
   2. read and write from/to db
 
   ```go
-
   mydb, err := GetDB("redis", 0)
 	if err != nil {
 		panic(err)
@@ -86,7 +85,6 @@ A refined common interface for [bolt](https://github.com/boltdb/bolt) and [redis
 		}
     return nil
   })
-
   ```
 
 3. More usage example, please refer
