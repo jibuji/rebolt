@@ -29,7 +29,7 @@ type IDB interface {
 
 	//View with only read operation, you should
 	// put your db-ops into the callback function implementations.
-	// Write to db here is not allowed.
+	// Write to DB here is not allowed.
 	View(callback func(tx ITX) error)
 }
 

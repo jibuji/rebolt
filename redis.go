@@ -23,23 +23,23 @@ func configureRedis(conf *RedisConfig) error {
 	return nil
 }
 
-//RedisDB IDB implementation
-type RedisDB struct {
+//redisDB IDB implementation
+type redisDB struct {
 	pool *pool.Pool
 }
 
 //Close close the pool
-func (db RedisDB) Close() {
+func (db redisDB) Close() {
 	db.pool.Empty()
 }
 
 //Update read-write ops
-func (db RedisDB) Update(f func(tx ITX) error) {
+func (db redisDB) Update(f func(tx ITX) error) {
 	op(db.pool, f, true)
 }
 
 //View read ops
-func (db RedisDB) View(f func(tx ITX) error) {
+func (db redisDB) View(f func(tx ITX) error) {
 	op(db.pool, f, false)
 }
 
@@ -158,7 +158,7 @@ func (tx redisTx) Exec() error {
 
 var dbMap = map[int]IDB{}
 
-//OpenRedisDB OpenRedisDB
+//getRedisDB getRedisDB
 func getRedisDB(dbIndex int) (IDB, error) {
 	mydb, _ := dbMap[dbIndex]
 
@@ -166,7 +166,7 @@ func getRedisDB(dbIndex int) (IDB, error) {
 		return mydb, nil
 	}
 	pool, err := createPool(dbIndex)
-	db := RedisDB{
+	db := redisDB{
 		pool: pool,
 	}
 	if err != nil {
